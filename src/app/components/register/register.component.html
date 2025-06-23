@@ -1,0 +1,149 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">Register</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="firstName" 
+                  [(ngModel)]="userData.firstName" 
+                  name="firstName" 
+                  required>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="lastName" 
+                  [(ngModel)]="userData.lastName" 
+                  name="lastName" 
+                  required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                [(ngModel)]="userData.email" 
+                name="email" 
+                required
+                email>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="password" 
+                  [(ngModel)]="userData.password" 
+                  name="password" 
+                  required
+                  minlength="6">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="confirmPassword" 
+                  [(ngModel)]="confirmPassword" 
+                  name="confirmPassword" 
+                  required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                id="phoneNumber" 
+                [(ngModel)]="userData.phoneNumber" 
+                name="phoneNumber">
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea 
+                class="form-control" 
+                id="address" 
+                [(ngModel)]="userData.address" 
+                name="address" 
+                rows="3"></textarea>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="city" class="form-label">City</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="city" 
+                  [(ngModel)]="userData.city" 
+                  name="city">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label for="state" class="form-label">State</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="state" 
+                  [(ngModel)]="userData.state" 
+                  name="state">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label for="pincode" class="form-label">Pincode</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="pincode" 
+                  [(ngModel)]="userData.pincode" 
+                  name="pincode">
+              </div>
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error">
+              {{ error }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success">
+              {{ success }}
+            </div>
+
+            <div class="d-grid">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="loading || registerForm.invalid">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ loading ? 'Registering...' : 'Register' }}
+              </button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-3">
+            <a routerLink="/login">Already have an account? Login here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

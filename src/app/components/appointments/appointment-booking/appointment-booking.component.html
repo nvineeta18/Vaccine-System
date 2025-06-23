@@ -1,0 +1,87 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Book New Appointment</h5>
+  </div>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #appointmentForm="ngForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="vaccinationCenter" class="form-label">Vaccination Center</label>
+          <select 
+            class="form-select" 
+            id="vaccinationCenter" 
+            [(ngModel)]="appointmentData.vaccinationCenterId" 
+            name="vaccinationCenter" 
+            required>
+            <option value="">Select a center</option>
+            <option *ngFor="let center of vaccinationCenters" [value]="center.id">
+              {{ center.name }} - {{ center.city }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="vaccineType" class="form-label">Vaccine Type</label>
+          <select 
+            class="form-select" 
+            id="vaccineType" 
+            [(ngModel)]="appointmentData.vaccineType" 
+            name="vaccineType" 
+            required>
+            <option value="">Select vaccine type</option>
+            <option *ngFor="let vaccine of vaccineTypes" [value]="vaccine">
+              {{ vaccine }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="appointmentDate" class="form-label">Appointment Date</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="appointmentDate" 
+            [(ngModel)]="appointmentData.appointmentDate" 
+            name="appointmentDate" 
+            [min]="getMinDate()"
+            required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="appointmentTime" class="form-label">Appointment Time</label>
+          <select 
+            class="form-select" 
+            id="appointmentTime" 
+            [(ngModel)]="appointmentData.appointmentTime" 
+            name="appointmentTime" 
+            required>
+            <option value="">Select time slot</option>
+            <option *ngFor="let time of timeSlots" [value]="time">
+              {{ time }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="alert alert-success" *ngIf="success">
+        {{ success }}
+      </div>
+
+      <div class="d-grid">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="loading || appointmentForm.invalid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? 'Booking...' : 'Book Appointment' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

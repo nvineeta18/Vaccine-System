@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">Vaccine Management System</a>
+    
+    <div class="navbar-nav ms-auto">
+      <span class="navbar-text me-3" *ngIf="currentUser">
+        Welcome, {{ currentUser.firstName }} {{ currentUser.lastName }}
+        <span class="badge bg-secondary ms-2">{{ currentUser.role }}</span>
+      </span>
+      <button class="btn btn-outline-light" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3>Dashboard</h3>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status"></div>
+            <p>Loading...</p>
+          </div>
+          
+          <div *ngIf="!loading" class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Book Appointment</h5>
+                  <p class="card-text">Schedule your vaccination appointment.</p>
+                  <button class="btn btn-primary">Book Now</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">View Centers</h5>
+                  <p class="card-text">Find vaccination centers near you.</p>
+                  <button class="btn btn-info">View Centers</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3" *ngIf="isAdmin()">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Manage Appointments</h5>
+                  <p class="card-text">Manage all appointments (Admin only).</p>
+                  <button class="btn btn-warning">Manage</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3" *ngIf="isAdmin()">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Vaccine Stocks</h5>
+                  <p class="card-text">Manage vaccine inventory (Admin only).</p>
+                  <button class="btn btn-success">Manage Stocks</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

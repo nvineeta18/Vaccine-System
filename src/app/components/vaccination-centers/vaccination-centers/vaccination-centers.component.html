@@ -1,0 +1,155 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5>Vaccination Centers</h5>
+    <button *ngIf="isAdmin()" class="btn btn-primary" (click)="toggleAddForm()">
+      {{ showAddForm ? 'Cancel' : 'Add New Center' }}
+    </button>
+  </div>
+  <div class="card-body">
+    
+    <!-- Search Controls -->
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <div class="input-group">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search by city..." 
+            [(ngModel)]="searchCity">
+          <button class="btn btn-outline-secondary" (click)="searchByCity()">Search</button>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="input-group">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search by pincode..." 
+            [(ngModel)]="searchPincode">
+          <button class="btn btn-outline-secondary" (click)="searchByPincode()">Search</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-secondary w-100" (click)="loadCenters()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Add/Edit Center Form -->
+    <div *ngIf="showAddForm && isAdmin()" class="card mb-4">
+      <div class="card-header">
+        <h6>{{ editingCenter ? 'Edit Center' : 'Add New Center' }}</h6>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="saveCenter()" #centerForm="ngForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Center Name</label>
+              <input type="text" class="form-control" [(ngModel)]="newCenter.name" name="name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" [(ngModel)]="newCenter.phoneNumber" name="phoneNumber">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" [(ngModel)]="newCenter.address" name="address" required rows="3"></textarea>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control" [(ngModel)]="newCenter.city" name="city" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">State</label>
+              <input type="text" class="form-control" [(ngModel)]="newCenter.state" name="state" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pincode</label>
+              <input type="text" class="form-control" [(ngModel)]="newCenter.pincode" name="pincode" required>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Opening Time</label>
+              <input type="time" class="form-control" [(ngModel)]="newCenter.openingTime" name="openingTime">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Closing Time</label>
+              <input type="time" class="form-control" [(ngModel)]="newCenter.closingTime" name="closingTime">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Daily Capacity</label>
+              <input type="number" class="form-control" [(ngModel)]="newCenter.dailyCapacity" name="dailyCapacity" min="1" required>
+            </div>
+          </div>
+          
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success" [disabled]="centerForm.invalid">
+              {{ editingCenter ? 'Update Center' : 'Create Center' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+    </div>
+
+    <!-- Centers Table -->
+    <div class="table-responsive" *ngIf="!loading">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Contact</th>
+            <th>Timing</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th *ngIf="isAdmin()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let center of filteredCenters">
+            <td>
+              <strong>{{ center.name }}</strong><br>
+              <small class="text-muted">{{ center.address }}</small>
+            </td>
+            <td>
+              {{ center.city }}, {{ center.state }}<br>
+              <span class="badge bg-info">{{ center.pincode }}</span>
+            </td>
+            <td>{{ center.phoneNumber || '-' }}</td>
+            <td>{{ center.openingTime }} - {{ center.closingTime }}</td>
+            <td>{{ center.dailyCapacity }}</td>
+            <td>
+              <span class="badge" [class]="getStatusBadgeClass(center.status)">
+                {{ center.status }}
+              </span>
+            </td>
+            <td *ngIf="isAdmin()">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" (click)="editCenter(center)">Edit</button>
+                <button class="btn btn-outline-warning" (click)="toggleCenterStatus(center)">
+                  {{ center.status === 'ACTIVE' ? 'Disable' : 'Enable' }}
+                </button>
+                <button class="btn btn-outline-danger" (click)="deleteCenter(center.id!)">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!loading && filteredCenters.length === 0" class="text-center text-muted">
+      No vaccination centers found.
+    </div>
+  </div>
+</div>
