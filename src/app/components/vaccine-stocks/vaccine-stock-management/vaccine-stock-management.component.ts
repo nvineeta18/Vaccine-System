@@ -64,19 +64,56 @@ export class VaccineStockManagementComponent implements OnInit {
     }
   }
 
+  // UPDATED METHOD WITH ENHANCED VALIDATION AND ERROR HANDLING
   addOrUpdateStock(): void {
+    // Validation
+    if (!this.newStock.centerId || this.newStock.centerId === 0) {
+      alert('Please select a vaccination center');
+      return;
+    }
+    
+    if (!this.newStock.vaccineType || this.newStock.vaccineType.trim() === '') {
+      alert('Please select a vaccine type');
+      return;
+    }
+    
+    if (this.newStock.quantity < 0) {
+      alert('Quantity cannot be negative');
+      return;
+    }
+
+    console.log('📤 Sending stock data:', this.newStock);
+
     this.vaccineStockService.addOrUpdateStock(
       this.newStock.centerId,
       this.newStock.vaccineType,
       this.newStock.quantity
     ).subscribe({
-      next: () => {
-        this.loadStocks();
-        this.resetForm();
-        alert('Stock updated successfully!');
+      next: (response: any) => {
+        console.log('✅ Success response:', response);
+        
+        if (response.success) {
+          this.loadStocks();
+          this.resetForm();
+          alert('Stock updated successfully!');
+        } else {
+          alert('Error: ' + (response.error || 'Unknown error'));
+        }
       },
       error: (error: any) => {
-        alert('Error updating stock: ' + (error.error?.error || 'Unknown error'));
+        console.error('❌ Error response:', error);
+        
+        let errorMessage = 'Unknown error occurred';
+        
+        if (error.error && typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.error && error.error.error) {
+          errorMessage = error.error.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        alert('Error updating stock: ' + errorMessage);
       }
     });
   }

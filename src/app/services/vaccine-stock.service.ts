@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { VaccineStock } from '../models/vaccine-stock.model';
 
@@ -11,8 +11,19 @@ export class VaccineStockService {
 
   constructor(private http: HttpClient) {}
 
-  addOrUpdateStock(centerId: number, vaccineType: string, quantity: number): Observable<VaccineStock> {
-    return this.http.post<VaccineStock>(`${this.baseUrl}/center/${centerId}?vaccineType=${vaccineType}&quantity=${quantity}`, {});
+  addOrUpdateStock(centerId: number, vaccineType: string, quantity: number): Observable<any> {
+    // Create clean HTTP parameters
+    const params = new HttpParams()
+      .set('vaccineType', vaccineType)
+      .set('quantity', quantity.toString());
+
+    const url = `${this.baseUrl}/center/${centerId}`;
+    
+    console.log('🚀 Making request to:', url);
+    console.log('📋 Parameters:', { vaccineType, quantity });
+    
+    // Send empty body with parameters
+    return this.http.post<any>(url, {}, { params });
   }
 
   getCenterStocks(centerId: number): Observable<VaccineStock[]> {

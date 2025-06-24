@@ -28,9 +28,9 @@
           <div *ngIf="!loading" class="row">
             <!-- Book Appointment Card -->
             <div class="col-md-6 mb-3">
-              <div class="card h-100">
+              <div class="card h-100 border-primary">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">📅 Book Appointment</h5>
+                  <h5 class="card-title text-primary">📅 Book Appointment</h5>
                   <p class="card-text flex-grow-1">Schedule your vaccination appointment at nearby centers.</p>
                   <button 
                     class="btn btn-primary mt-auto" 
@@ -44,10 +44,10 @@
             
             <!-- View Centers Card -->
             <div class="col-md-6 mb-3">
-              <div class="card h-100">
+              <div class="card h-100 border-info">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">🏥 View Centers</h5>
-                  <p class="card-text flex-grow-1">Find vaccination centers near you and check availability.</p>
+                  <h5 class="card-title text-info">🏥 View Centers</h5>
+                  <p class="card-text flex-grow-1">Find vaccination centers and manage center information.</p>
                   <button 
                     class="btn btn-info mt-auto" 
                     (click)="onViewCenters()"
@@ -58,11 +58,11 @@
               </div>
             </div>
             
-            <!-- Admin Only Cards -->
+            <!-- Manage Appointments Card (Admin Only) -->
             <div class="col-md-6 mb-3" *ngIf="isAdmin()">
-              <div class="card h-100">
+              <div class="card h-100 border-warning">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">⚙️ Manage Appointments</h5>
+                  <h5 class="card-title text-warning">⚙️ Manage Appointments</h5>
                   <p class="card-text flex-grow-1">View and manage all appointments (Admin only).</p>
                   <button 
                     class="btn btn-warning mt-auto" 
@@ -74,10 +74,11 @@
               </div>
             </div>
             
+            <!-- Vaccine Stocks Card (Admin Only) -->
             <div class="col-md-6 mb-3" *ngIf="isAdmin()">
-              <div class="card h-100">
+              <div class="card h-100 border-success">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">💉 Vaccine Stocks</h5>
+                  <h5 class="card-title text-success">💉 Vaccine Stocks</h5>
                   <p class="card-text flex-grow-1">Manage vaccine inventory and stock levels (Admin only).</p>
                   <button 
                     class="btn btn-success mt-auto" 

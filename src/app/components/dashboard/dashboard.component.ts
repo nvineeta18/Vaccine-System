@@ -34,20 +34,24 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // WORKING navigation methods
+  // NAVIGATION METHODS - All working perfectly
   onBookAppointment(): void {
+    console.log('Navigating to booking screen...');
     this.router.navigate(['/book-appointment']);
   }
 
   onViewCenters(): void {
+    console.log('Navigating to vaccination centers...');
     this.router.navigate(['/vaccination-centers']);
   }
 
   onManageAppointments(): void {
+    console.log('Navigating to appointment management...');
     this.router.navigate(['/manage-appointments']);
   }
 
   onManageStocks(): void {
+    console.log('Navigating to vaccine stock management...');
     this.router.navigate(['/vaccine-stocks']);
   }
 }

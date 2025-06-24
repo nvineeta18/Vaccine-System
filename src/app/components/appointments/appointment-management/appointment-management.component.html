@@ -1,3 +1,10 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Appointment Management</h2>
+    <button class="btn btn-outline-secondary" routerLink="/dashboard">
+      ← Back to Dashboard
+    </button>
+  </div>
 <div class="card">
   <div class="card-header">
     <h5>All Appointments Management</h5>
@@ -5,15 +12,15 @@
   <div class="card-body">
     <!-- Search and Filter Controls -->
     <div class="row mb-3">
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
         <input 
           type="text" 
           class="form-control" 
           placeholder="Search by user name or center..." 
           [(ngModel)]="searchTerm"
           (ngModelChange)="filterAppointments()">
-      </div>
-      <div class="col-md-6">
+      </div> -->
+      <!-- <div class="col-md-6">
         <select 
           class="form-select" 
           [(ngModel)]="statusFilter"
@@ -23,7 +30,7 @@
           <option value="COMPLETED">Completed</option>
           <option value="CANCELLED">Cancelled</option>
         </select>
-      </div>
+      </div> -->
     </div>
 
     <!-- Loading Spinner -->
@@ -57,7 +64,7 @@
             <td>{{ appointment.id }}</td>
             <td>{{ appointment.user?.firstName }} {{ appointment.user?.lastName }}</td>
             <td>{{ appointment.vaccinationCenter?.name }}</td>
-            <td>{{ appointment.appointmentDate | date }}</td>
+            <!-- <td>{{ appointment.appointmentDate | date }}</td> -->
             <td>{{ appointment.appointmentTime }}</td>
             <td>{{ appointment.vaccineType }}</td>
             <td>
