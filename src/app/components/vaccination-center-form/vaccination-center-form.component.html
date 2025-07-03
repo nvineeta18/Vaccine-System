@@ -1,0 +1,221 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">
+      <i class="fas fa-hospital me-2"></i>
+      {{ isEditMode ? 'Edit Vaccination Center' : 'Add New Vaccination Center' }}
+    </h5>
+  </div>
+  
+  <div class="card-body">
+    <form [formGroup]="vaccinationCenterForm" (ngSubmit)="onSubmit()" novalidate>
+      
+      <!-- Hidden ID field for edit mode -->
+      <input type="hidden" formControlName="id">
+      
+      <!-- Basic Information -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="name" class="form-label">
+            Center Name <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control"
+            id="name"
+            formControlName="name"
+            [class.is-invalid]="name?.invalid && name?.touched"
+            placeholder="Enter vaccination center name">
+          <div class="invalid-feedback" *ngIf="name?.invalid && name?.touched">
+            <div *ngIf="name?.errors?.['required']">Center name is required</div>
+            <div *ngIf="name?.errors?.['minlength']">Center name must be at least 3 characters</div>
+            <div *ngIf="name?.errors?.['maxlength']">Center name cannot exceed 100 characters</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input 
+            type="tel" 
+            class="form-control"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            [class.is-invalid]="phoneNumber?.invalid && phoneNumber?.touched"
+            placeholder="Enter 10-digit phone number">
+          <div class="invalid-feedback" *ngIf="phoneNumber?.invalid && phoneNumber?.touched">
+            <div *ngIf="phoneNumber?.errors?.['pattern']">Please enter a valid 10-digit phone number</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="mb-3">
+        <label for="address" class="form-label">
+          Full Address <span class="text-danger">*</span>
+        </label>
+        <textarea 
+          class="form-control"
+          id="address"
+          formControlName="address"
+          [class.is-invalid]="address?.invalid && address?.touched"
+          rows="3"
+          placeholder="Enter complete address with street, area, landmark"></textarea>
+        <div class="invalid-feedback" *ngIf="address?.invalid && address?.touched">
+          <div *ngIf="address?.errors?.['required']">Address is required</div>
+          <div *ngIf="address?.errors?.['minlength']">Address must be at least 10 characters</div>
+          <div *ngIf="address?.errors?.['maxlength']">Address cannot exceed 200 characters</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="city" class="form-label">
+            City <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control"
+            id="city"
+            formControlName="city"
+            [class.is-invalid]="city?.invalid && city?.touched"
+            placeholder="Enter city name">
+          <div class="invalid-feedback" *ngIf="city?.invalid && city?.touched">
+            <div *ngIf="city?.errors?.['required']">City is required</div>
+            <div *ngIf="city?.errors?.['minlength']">City must be at least 2 characters</div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="state" class="form-label">
+            State <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control"
+            id="state"
+            formControlName="state"
+            [class.is-invalid]="state?.invalid && state?.touched"
+            placeholder="Enter state name">
+          <div class="invalid-feedback" *ngIf="state?.invalid && state?.touched">
+            <div *ngIf="state?.errors?.['required']">State is required</div>
+            <div *ngIf="state?.errors?.['minlength']">State must be at least 2 characters</div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="pincode" class="form-label">
+            Pincode <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control"
+            id="pincode"
+            formControlName="pincode"
+            [class.is-invalid]="pincode?.invalid && pincode?.touched"
+            placeholder="Enter 6-digit pincode"
+            maxlength="6">
+          <div class="invalid-feedback" *ngIf="pincode?.invalid && pincode?.touched">
+            <div *ngIf="pincode?.errors?.['required']">Pincode is required</div>
+            <div *ngIf="pincode?.errors?.['pattern']">Please enter a valid 6-digit pincode</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operational Information -->
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label for="openingTime" class="form-label">
+            Opening Time <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="time" 
+            class="form-control"
+            id="openingTime"
+            formControlName="openingTime"
+            [class.is-invalid]="openingTime?.invalid && openingTime?.touched">
+          <div class="invalid-feedback" *ngIf="openingTime?.invalid && openingTime?.touched">
+            <div *ngIf="openingTime?.errors?.['required']">Opening time is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label for="closingTime" class="form-label">
+            Closing Time <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="time" 
+            class="form-control"
+            id="closingTime"
+            formControlName="closingTime"
+            [class.is-invalid]="closingTime?.invalid && closingTime?.touched">
+          <div class="invalid-feedback" *ngIf="closingTime?.invalid && closingTime?.touched">
+            <div *ngIf="closingTime?.errors?.['required']">Closing time is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label for="dailyCapacity" class="form-label">
+            Daily Capacity <span class="text-danger">*</span>
+          </label>
+          <input 
+            type="number" 
+            class="form-control"
+            id="dailyCapacity"
+            formControlName="dailyCapacity"
+            [class.is-invalid]="dailyCapacity?.invalid && dailyCapacity?.touched"
+            min="1"
+            max="1000"
+            placeholder="Enter daily capacity">
+          <div class="invalid-feedback" *ngIf="dailyCapacity?.invalid && dailyCapacity?.touched">
+            <div *ngIf="dailyCapacity?.errors?.['required']">Daily capacity is required</div>
+            <div *ngIf="dailyCapacity?.errors?.['min']">Daily capacity must be at least 1</div>
+            <div *ngIf="dailyCapacity?.errors?.['max']">Daily capacity cannot exceed 1000</div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label for="status" class="form-label">
+            Status <span class="text-danger">*</span>
+          </label>
+          <select 
+            class="form-select"
+            id="status"
+            formControlName="status"
+            [class.is-invalid]="status?.invalid && status?.touched">
+            <option value="" disabled>Select status</option>
+            <option *ngFor="let statusOption of centerStatusOptions" [value]="statusOption">
+              {{ statusOption }}
+            </option>
+          </select>
+          <div class="invalid-feedback" *ngIf="status?.invalid && status?.touched">
+            <div *ngIf="status?.errors?.['required']">Status is required</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="d-flex gap-2 justify-content-end">
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="onCancel()">
+          <i class="fas fa-times me-1"></i>
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-success"
+          [disabled]="vaccinationCenterForm.invalid">
+          <i class="fas fa-save me-1"></i>
+          {{ isEditMode ? 'Update Center' : 'Create Center' }}
+        </button>
+      </div>
+
+      <!-- Debug Info (Remove in production) -->
+      <div class="mt-3" *ngIf="false">
+        <h6>Debug Info:</h6>
+        <pre>{{ vaccinationCenterForm.value | json }}</pre>
+        <p>Form Valid: {{ vaccinationCenterForm.valid }}</p>
+      </div>
+    </form>
+  </div>
+</div>

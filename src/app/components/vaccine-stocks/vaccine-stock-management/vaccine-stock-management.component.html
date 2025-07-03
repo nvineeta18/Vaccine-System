@@ -1,0 +1,124 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Vaccine Stock Management</h2>
+    <div>
+      <button class="btn btn-outline-secondary me-2" routerLink="/dashboard">
+        ← Back to Dashboard
+      </button>
+      <button 
+        class="btn btn-primary" 
+        (click)="toggleAddForm()">
+        {{ showAddForm ? 'Cancel' : 'Add/Update Stock' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Add/Update Stock Form -->
+  <div *ngIf="showAddForm" class="card mb-4">
+    <div class="card-header">
+      <h6>Add/Update Vaccine Stock</h6>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addOrUpdateStock()" #stockForm="ngForm">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Vaccination Center</label>
+            <select class="form-select" [(ngModel)]="newStock.centerId" name="centerId" required>
+              <option value="0">Select a center</option>
+              <option *ngFor="let center of centers" [value]="center.id">
+                {{ center.name }} - {{ center.city }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Vaccine Type</label>
+            <select class="form-select" [(ngModel)]="newStock.vaccineType" name="vaccineType" required>
+              <option value="">Select vaccine type</option>
+              <option *ngFor="let vaccine of vaccineTypes" [value]="vaccine">
+                {{ vaccine }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="newStock.quantity" name="quantity" min="0" required>
+          </div>
+        </div>
+        
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success" [disabled]="stockForm.invalid">
+            Update Stock
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status"></div>
+    <p>Loading stocks...</p>
+  </div>
+
+  <!-- Stocks Table -->
+  <div *ngIf="!loading && stocks.length > 0" class="card">
+    <div class="card-header">
+      <h5>Current Vaccine Stocks</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Center</th>
+              <th>Vaccine Type</th>
+              <th>Quantity</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- FIXED: Changed availableStock to quantity -->
+            <tr *ngFor="let stock of stocks" [class]="getStockStatusClass(stock.quantity)">
+              <td>{{ stock.vaccinationCenter?.name || 'N/A' }}</td>
+              <td>{{ stock.vaccineType }}</td>
+              <td>
+                <!-- FIXED: Changed availableStock to quantity -->
+                <strong>{{ stock.quantity }}</strong>
+              </td>
+              <td>
+                <!-- FIXED: Changed availableStock to quantity -->
+                <span *ngIf="stock.quantity === 0" class="badge bg-danger">Out of Stock</span>
+                <span *ngIf="stock.quantity > 0 && stock.quantity < 50" class="badge bg-warning">Low Stock</span>
+                <span *ngIf="stock.quantity >= 50" class="badge bg-success">In Stock</span>
+              </td>
+              <td>
+                <!-- REMOVED: lastUpdated column since it doesn't exist -->
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteStock(stock.id!)"
+                  *ngIf="stock.id">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Stocks Message -->
+  <div *ngIf="!loading && stocks.length === 0" class="alert alert-info">
+    <h4>No vaccine stocks found</h4>
+    <p>There are currently no vaccine stocks in the system.</p>
+    <button 
+      class="btn btn-primary" 
+      (click)="toggleAddForm()">
+      Add First Stock
+    </button>
+  </div>
+</div>

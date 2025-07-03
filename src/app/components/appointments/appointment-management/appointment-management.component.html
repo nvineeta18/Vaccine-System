@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Appointment Management</h2>
+    <button class="btn btn-outline-secondary" routerLink="/dashboard">
+      ← Back to Dashboard
+    </button>
+  </div>
+<div class="card">
+  <div class="card-header">
+    <h5>All Appointments Management</h5>
+  </div>
+  <div class="card-body">
+    <!-- Search and Filter Controls -->
+    <div class="row mb-3">
+      <!-- <div class="col-md-6">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by user name or center..." 
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterAppointments()">
+      </div> -->
+      <!-- <div class="col-md-6">
+        <select 
+          class="form-select" 
+          [(ngModel)]="statusFilter"
+          (ngModelChange)="filterAppointments()">
+          <option value="">All Statuses</option>
+          <option value="SCHEDULED">Scheduled</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div> -->
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+    </div>
+
+    <!-- No Data Message -->
+    <div *ngIf="!loading && filteredAppointments.length === 0" class="text-center text-muted">
+      No appointments found.
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="table-responsive" *ngIf="!loading && filteredAppointments.length > 0">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Center</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Vaccine</th>
+            <th>Status</th>
+            <th>Certificate</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of filteredAppointments">
+            <td>{{ appointment.id }}</td>
+            <td>{{ appointment.user?.firstName }} {{ appointment.user?.lastName }}</td>
+            <td>{{ appointment.vaccinationCenter?.name }}</td>
+            <!-- <td>{{ appointment.appointmentDate | date }}</td> -->
+            <td>{{ appointment.appointmentTime }}</td>
+            <td>{{ appointment.vaccineType }}</td>
+            <td>
+              <span class="badge" [class]="getStatusBadgeClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="appointment.certificateNumber" class="badge bg-info">
+                {{ appointment.certificateNumber }}
+              </span>
+              <span *ngIf="!appointment.certificateNumber" class="text-muted">-</span>
+            </td>
+            <td>
+              <button 
+                *ngIf="appointment.status === 'SCHEDULED'" 
+                class="btn btn-sm btn-success"
+                (click)="markAsCompleted(appointment.id!)">
+                Mark Completed
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

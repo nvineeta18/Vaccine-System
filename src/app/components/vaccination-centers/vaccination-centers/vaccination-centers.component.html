@@ -1,0 +1,78 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Vaccination Centers</h2>
+    <div>
+      <button class="btn btn-outline-secondary me-2" routerLink="/dashboard">
+        ← Back to Dashboard
+      </button>
+      <button 
+        *ngIf="isAdmin()" 
+        class="btn btn-primary" 
+        (click)="toggleAddForm()">
+        {{ showAddForm ? 'Cancel' : 'Add New Center' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ADD THIS: Form Component -->
+  <div *ngIf="showAddForm" class="mb-4">
+    <app-vaccination-center-form
+      [editingCenter]="editingCenter"
+      (centerSaved)="onCenterSaved($event)"
+      (formCancelled)="onFormCancelled()">
+    </app-vaccination-center-form>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status"></div>
+    <p>Loading centers...</p>
+  </div>
+
+  <!-- Centers List -->
+  <div *ngIf="!loading && centers.length > 0" class="row">
+    <div class="col-md-6 col-lg-4 mb-3" *ngFor="let center of centers">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ center.name }}</h5>
+          <p class="card-text">
+            <strong>Address:</strong> {{ center.address }}<br>
+            <strong>City:</strong> {{ center.city }}, {{ center.state }}<br>
+            <strong>Pincode:</strong> {{ center.pincode }}<br>
+            <strong>Phone:</strong> {{ center.phoneNumber }}<br>
+            <strong>Capacity:</strong> {{ center.dailyCapacity }} per day<br>
+            <strong>Hours:</strong> {{ center.openingTime }} - {{ center.closingTime }}<br>
+            <span class="badge" 
+                  [class]="center.status === 'ACTIVE' ? 'bg-success' : 'bg-warning'">
+              {{ center.status }}
+            </span>
+          </p>
+        </div>
+        <div class="card-footer" *ngIf="isAdmin()">
+          <button 
+            class="btn btn-sm btn-outline-primary me-2"
+            (click)="editCenter(center)">
+            Edit
+          </button>
+          <button 
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteCenter(center.id!)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Centers Message -->
+  <div *ngIf="!loading && centers.length === 0" class="alert alert-info">
+    <h4>No vaccination centers found</h4>
+    <p>There are currently no vaccination centers in the system.</p>
+    <button 
+      *ngIf="isAdmin()" 
+      class="btn btn-primary" 
+      (click)="toggleAddForm()">
+      Add First Center
+    </button>
+  </div>
+</div>
